@@ -1,0 +1,26 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs">
+    <Files>
+      <File FileName="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs" Line="427" Column="18" />
+      <File FileName="TypeScript.Formatting/TypeScriptIndentEngine.cs" Line="93" Column="3" />
+      <File FileName="TypeScript.Formatting/TypeScriptIndentEngineStack.cs" Line="44" Column="3" />
+      <File FileName="TODO.txt" Line="4" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="TypeScriptBinding" expanded="True">
+            <Node name="TypeScript.Formatting" expanded="True">
+              <Node name="TypeScriptTextEditorIndentation.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

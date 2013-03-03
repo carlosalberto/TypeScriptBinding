@@ -1,0 +1,3 @@
+
+* Look for a CSharpFormatter and move it here.
+* What if isSomethingSelected is something that can change across the state of the KeyPress() method?
