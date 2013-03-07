@@ -48,7 +48,6 @@ namespace TypeScript.Formatting
 	{
 		DocumentStateTracker<TypeScriptIndentEngine> stateTracker;
 		int cursorPositionBeforeKeyPress;
-		TextEditorData textEditorData;
 		TypeScriptFormattingPolicy policy;
 		TextStylePolicy textStylePolicy;
 
@@ -98,23 +97,26 @@ namespace TypeScript.Formatting
 		
 		void RunFormatter (DocumentLocation location)
 		{
-			if (!OnTheFlyFormatting || textEditorData == null)
+			if (!OnTheFlyFormatting || Editor == null)
 				return;
 
-			var editMode = textEditorData.CurrentMode;
+			var editMode = Editor.CurrentMode;
 			if (editMode is TextLinkEditMode || editMode is InsertionCursorEditMode)
 				return;
 
-			OnTheFlyFormatter.Format (Document, location);
+			// FIXME - Port a formatter for Typescript.
+			//OnTheFlyFormatter.Format (Document, location);
 		}
 
 		public TypeScriptTextEditorIndentation ()
 		{
 			// FIXME
 			// LOOK FOR CSharpFormatter and add ourselves as typescript, etc.
+			/*
 			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (CSharpFormatter.MimeType);
 			policy = MonoDevelop.Projects.Policies.PolicyService.GetDefaultPolicy<TypeScriptFormattingPolicy> (types);
 			textStylePolicy = MonoDevelop.Projects.Policies.PolicyService.GetDefaultPolicy<TextStylePolicy> (types);
+			*/
 		}
 
 		public override void Initialize ()
@@ -122,6 +124,7 @@ namespace TypeScript.Formatting
 			base.Initialize ();
 
 			// FIXME - same as above.
+			/*
 			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (CSharpFormatter.MimeType);
 			if (Document.Project != null && Document.Project.Policies != null) {
 				policy = base.Document.Project.Policies.Get<TypeScriptFormattingPolicy> (types);
@@ -129,7 +132,7 @@ namespace TypeScript.Formatting
 			}
 
 			if (Editor != null) {
-				Editor.Options.Changed += () => {
+				Editor.Options.Changed += (o, args) => {
 					var project = Document.Project;
 					if (project != null) {
 						policy = project.Policies.Get<TypeScriptFormattingPolicy> (types);
@@ -147,6 +150,7 @@ namespace TypeScript.Formatting
 					new DocumentStateTracker<TypeScriptIndentEngine> (new TypeScriptIndentEngine (policy, textStylePolicy), Editor)
 				);
 			}
+			*/
 
 			InitTracker ();
 			Document.Editor.Paste += HandleTextPaste;
@@ -156,7 +160,7 @@ namespace TypeScript.Formatting
 
 		void InitTracker ()
 		{
-			stateTracker = new DocumentStateTracker<TypeScriptIndentEngine> (new TypeScriptIndentEngine (policy, textStylePolicy), textEditorData);
+			stateTracker = new DocumentStateTracker<TypeScriptIndentEngine> (new TypeScriptIndentEngine (policy, textStylePolicy), Editor);
 		}
 
 		internal DocumentStateTracker<TypeScriptIndentEngine> StateTracker { get { return stateTracker; } }
@@ -166,11 +170,13 @@ namespace TypeScript.Formatting
 		public bool DoInsertTemplate ()
 		{
 			// FIXME - MimeType, etc
+			/*
 			string word = CodeTemplate.GetWordBeforeCaret (Editor);
 			foreach (CodeTemplate template in CodeTemplateService.GetCodeTemplates (CSharpFormatter.MimeType)) {
 				if (template.Shortcut == word) 
 					return true;
 			}
+			*/
 
 			return false;
 		}
@@ -183,11 +189,12 @@ namespace TypeScript.Formatting
 			bool isSomethingSelected = Editor.IsSomethingSelected;
 			var editorMode = Editor.CurrentMode;
 			var isTabReindent = DefaultSourceEditorOptions.Instance.TabIsReindent;
+			var document = Editor.Document;
 
 			cursorPositionBeforeKeyPress = Editor.Caret.Offset;
 
 			if (key == Gdk.Key.BackSpace && Editor.Caret.Offset == lastInsertedSemicolon) {
-				textEditorData.Document.Undo ();
+				Editor.Document.Undo ();
 				lastInsertedSemicolon = -1;
 				return false;
 			}
@@ -201,8 +208,8 @@ namespace TypeScript.Formatting
 
 				bool retval = base.KeyPress (key, keyChar, modifier);
 
-				var currLine = Document.GetLine (EditorData.Caret.Line);
-				string text = textEditorData.Document.GetTextAt (currLine);
+				DocumentLine currLine = document.GetLine (Editor.Caret.Line);
+				string text = document.GetTextAt (currLine);
 				if (text.EndsWith (";") || text.Trim ().StartsWith ("for"))
 					return retval;
 
@@ -247,7 +254,7 @@ namespace TypeScript.Formatting
 						if (delta < 2 && delta > 0) {
 							Editor.Remove (cursor - delta, delta);
 							Editor.Caret.Offset = cursor - delta;
-							Document.CommitLineUpdate (Editor.Caret.Line);
+							document.CommitLineUpdate (Editor.Caret.Line);
 						}
 					}
 
@@ -262,7 +269,7 @@ namespace TypeScript.Formatting
 			// Smart indent logic.
 			//
 
-			if (textEditorData.Options.IndentStyle == IndentStyle.Smart || Editor.Options.IndentStyle == IndentStyle.Virtual) {
+			if (Editor.Options.IndentStyle == IndentStyle.Smart || Editor.Options.IndentStyle == IndentStyle.Virtual) {
 				bool retval;
 
 				// capture some of the current state
@@ -277,7 +284,7 @@ namespace TypeScript.Formatting
 					DoPreInsertionSmartIndent (key);
 
 				bool automaticReindent;
-				using (var undo = textEditorData.OpenUndoGroup ()) {
+				using (var undo = Editor.OpenUndoGroup ()) {
 
 					retval = base.KeyPress (key, keyChar, modifier);
 
@@ -340,13 +347,19 @@ namespace TypeScript.Formatting
 			return result;
 		}
 
-		public static int GuessSemicolonInsertionOffset (TextEditorData data, DocumentLine curLine, int caretOffset)
+		// 
+		// TODO - It seems the support for properties varies
+		// depending on the ECMA script requested version.
+		// Fix the code here.
+		// 
+		public static int GuessSemicolonInsertionOffset (TextEditorData data, DocumentLine currLine, int caretOffset)
 		{
 			int lastNonWsOffset = caretOffset;
 			char lastNonWsChar = '\0';
-		
-			int max = curLine.EndOffset;
-			if (caretOffset - 2 >= curLine.Offset && data.Document.GetCharAt (caretOffset - 2) == ')')
+			int max = currLine.EndOffset;
+
+			// PORT NOTE: Honestly, this looks like a hack.
+			if (caretOffset - 2 >= currLine.Offset && data.Document.GetCharAt (caretOffset - 2) == ')')
 				return caretOffset;
 
 			int end = caretOffset;
@@ -354,7 +367,7 @@ namespace TypeScript.Formatting
 				end--;
 
 			int end2 = end;
-			while (end2 > 1 && Char.IsLetter(data.GetCharAt (end2 - 1)))
+			while (end2 > 1 && Char.IsLetter (data.GetCharAt (end2 - 1)))
 				end2--;
 
 			if (end != end2) {
@@ -364,12 +377,13 @@ namespace TypeScript.Formatting
 					return caretOffset;
 			}
 
-			bool isInString = false, isVerbatimString = false;
-			bool isInLineComment = false , isInBlockComment= false;
+			bool isInDQuotedString = false, isInSQuotedString = false;
+			bool isInLineComment = false , isInBlockComment = false;
 
+			// Compare the first check against the original one.
 			for (int pos = caretOffset; pos < max; pos++) {
 				if (pos == caretOffset) {
-					if (isInString || isVerbatimString || isInLineComment || isInBlockComment)
+					if (isInDQuotedString || isInSQuotedString || isInLineComment || isInBlockComment)
 						return pos;
 				}
 
@@ -380,7 +394,7 @@ namespace TypeScript.Formatting
 						if (pos > 0 && data.Document.GetCharAt (pos - 1) == '*') 
 							isInBlockComment = false;
 
-					} else if (!isInString && pos + 1 < max) {
+					} else if (!(isInDQuotedString || isInSQuotedString) && pos + 1 < max) {
 						char nextChar = data.Document.GetCharAt (pos + 1);
 						if (nextChar == '/') {
 							isInLineComment = true;
@@ -394,25 +408,22 @@ namespace TypeScript.Formatting
 
 					break;
 				case '\\':
-					// LASTPOINT.
-					if (isInChar || (isInString && !isVerbatimString))
+					if (isInSQuotedString || isInDQuotedString)
 						pos++;
 
 					break;
 				case '"':
-					if (!(isInChar || isInLineComment || isInBlockComment)) {
-						if (isInString && isVerbatimString && pos + 1 < max && data.Document.GetCharAt (pos + 1) == '"') {
+					if (!(isInSQuotedString || isInLineComment || isInBlockComment)) {
+						if (isInDQuotedString && pos + 1 < max && data.Document.GetCharAt (pos + 1) == '"')
 							pos++;
-						} else {
-							isInString = !isInString;
-							isVerbatimString = false;
-						}
+						else
+							isInDQuotedString = !isInDQuotedString;
 					}
 
 					break;
 				case '\'':
-					if (!(isInString || isInLineComment || isInBlockComment)) 
-						isInChar = !isInChar;
+					if (!(isInDQuotedString || isInLineComment || isInBlockComment)) 
+						isInSQuotedString = !isInSQuotedString;
 
 					break;
 				}
@@ -453,11 +464,11 @@ namespace TypeScript.Formatting
 			if (start < 0 || end >= Editor.Length || Editor.IsSomethingSelected)
 				return;
 
-			char ch = textEditorData.GetCharAt (start);
+			char ch = Editor.GetCharAt (start);
 			if (ch == '"') {
 				int sgn = Math.Sign (end - start);
 				bool foundPlus = false;
-				for (int max = start + sgn; max != end && max >= 0 && max < textEditorData.Length; max += sgn) {
+				for (int max = start + sgn; max != end && max >= 0 && max < Editor.Length; max += sgn) {
 					ch = Editor.GetCharAt (max);
 
 					if (Char.IsWhiteSpace (ch))
@@ -473,14 +484,15 @@ namespace TypeScript.Formatting
 							break;
 
 						if (sgn < 0) {
-							textEditorData.Remove (max, start - max);
-							textEditorData.Caret.Offset = max + 1;
+							Editor.Remove (max, start - max);
+							Editor.Caret.Offset = max + 1;
 						} else {
-							textEditorData.Remove (start + sgn, max - start);
-							textEditorData.Caret.Offset = start;
+							Editor.Remove (start + sgn, max - start);
+							Editor.Caret.Offset = start;
 						}
 
 						break;
+
 					} else
 						break;
 				}
@@ -527,15 +539,17 @@ namespace TypeScript.Formatting
 			if (lineNumber <= DocumentLocation.MinLine)
 				return false;
 
-			var line = Document.GetLine (lineNumber);
+			var document = textEditorData.Document;
+
+			var line = textEditorData.Document.GetLine (lineNumber);
 			if (line == null)
 				return false;
 
-			var prevLine = Document.GetLine (lineNumber - 1);
+			var prevLine = document.GetLine (lineNumber - 1);
 			if (prevLine == null)
 				return false;
 
-			string trimmedPreviousLine = Document.GetTextAt (prevLine).TrimStart ();
+			string trimmedPreviousLine = document.GetTextAt (prevLine).TrimStart ();
 
 			//xml doc comments
 			//check previous line was a doc comment
@@ -545,10 +559,10 @@ namespace TypeScript.Formatting
 					return false;
 
 				//check that the newline command actually inserted a newline
-				Editor.EnsureCaretIsNotVirtual ();
+				textEditorData.EnsureCaretIsNotVirtual ();
 
-				int insertionPoint = line.Offset + line.GetIndentation (Document).Length;
-				string nextLine = Document.GetTextAt (Document.GetLine (lineNumber + 1)).TrimStart ();
+				int insertionPoint = line.Offset + line.GetIndentation (document).Length;
+				string nextLine = document.GetTextAt (document.GetLine (lineNumber + 1)).TrimStart ();
 
 				if (trimmedPreviousLine.Length > "///".Length || nextLine.StartsWith ("///")) {
 					textEditorData.Insert (insertionPoint, "/// ");
@@ -556,10 +570,10 @@ namespace TypeScript.Formatting
 				}
 			} else if (stateTracker.Engine.IsInsideMultiLineComment) {
 				//multi-line comments
-				if (Editor.GetTextAt (line.Offset, line.Length).TrimStart ().StartsWith ("*"))
+				if (textEditorData.GetTextAt (line.Offset, line.Length).TrimStart ().StartsWith ("*"))
 					return false;
 
-				Editor.EnsureCaretIsNotVirtual ();
+				textEditorData.EnsureCaretIsNotVirtual ();
 				string commentPrefix = string.Empty;
 
 				if (trimmedPreviousLine.StartsWith ("* ")) {
@@ -570,14 +584,14 @@ namespace TypeScript.Formatting
 					commentPrefix = "*";
 				}
 
-				int indentSize = line.GetIndentation (Document).Length;
-				var insertedText = prevLine.GetIndentation (Document) + commentPrefix;
+				int indentSize = line.GetIndentation (document).Length;
+				var insertedText = prevLine.GetIndentation (document) + commentPrefix;
 
-				Editor.Replace (line.Offset, indentSize, insertedText);
-				Editor.Caret.Offset = line.Offset + insertedText.Length;
+				textEditorData.Replace (line.Offset, indentSize, insertedText);
+				textEditorData.Caret.Offset = line.Offset + insertedText.Length;
 				return true;
 
-			} else if (stateTracker.Engine.IsInsideStringLiteral) {
+			} else if (stateTracker.Engine.IsInsideString) {
 				/* FIXME
 				var lexer = new CSharpCompletionEngineBase.MiniLexer (textEditorData.Document.GetTextAt (0, prevLine.EndOffset));
 				lexer.Parse ();
@@ -588,10 +602,10 @@ namespace TypeScript.Formatting
 				textEditorData.EnsureCaretIsNotVirtual ();
 				textEditorData.Insert (prevLine.Offset + prevLine.Length, "\" +");
 
-				int indentSize = line.GetIndentation (Document).Length;
-				var insertedText = prevLine.GetIndentation (Document) + (trimmedPreviousLine.StartsWith ("\"") ? "" : "\t") + "\"";
+				int indentSize = line.GetIndentation (document).Length;
+				var insertedText = prevLine.GetIndentation (document) + (trimmedPreviousLine.StartsWith ("\"") ? "" : "\t") + "\"";
 
-				Editor.Replace (line.Offset, indentSize, insertedText);
+				textEditorData.Replace (line.Offset, indentSize, insertedText);
 				return true;
 			}
 
@@ -601,7 +615,7 @@ namespace TypeScript.Formatting
 		//does re-indenting and cursor positioning
 		void DoReSmartIndent ()
 		{
-			DoReSmartIndent (textEditorData.Caret.Offset);
+			DoReSmartIndent (Editor.Caret.Offset);
 		}
 
 		void DoReSmartIndent (int cursor)
@@ -609,23 +623,26 @@ namespace TypeScript.Formatting
 			if (stateTracker.Engine.LineBeganInsideMultiLineComment)
 				return;
 
+			var document = Editor.Document;
+
 			string newIndent = String.Empty;
-			var line = Document.GetLineByOffset (cursor);
+			var line = document.GetLineByOffset (cursor);
 
 			// Get context to the end of the line w/o changing the main engine's state
 			var ctx = (TypeScriptIndentEngine)stateTracker.Engine.Clone ();
 			for (int i = cursor; i < line.EndOffset; i++)
-				ctx.Push (Document.GetCharAt (i));
+				ctx.Push (document.GetCharAt (i));
 				
 			// Yet another fucking issue: these nerds haven't realized
 			// how fucking crappy is no not know when a fucking offset
 			// is about the document, and when for the line. Go fuck yourselves.
 			int pos = line.Offset;
-			string currIndent = line.GetIndentation (Document);
+			string currIndent = line.GetIndentation (document);
+			int nlwsp = currIndent.Length;
 			int offset = cursor > pos + nlwsp ? cursor - (pos + nlwsp) : 0;
 
 			if (!stateTracker.Engine.LineBeganInsideMultiLineComment ||
-			    (nlwsp < line.LengthIncludingDelimiter && Document.GetCharAt (line.Offset + nlwsp) == '*')) {
+			    (nlwsp < line.LengthIncludingDelimiter && document.GetCharAt (line.Offset + nlwsp) == '*')) {
 				// Possibly replace the indent
 				newIndent = ctx.ThisLineIndent;
 				int newIndentLength = newIndent.Length;
@@ -639,7 +656,7 @@ namespace TypeScript.Formatting
 					}
 
 					newIndentLength = Editor.Replace (pos, nlwsp, newIndent);
-					Document.CommitLineUpdate (Editor.Caret.Line);
+					document.CommitLineUpdate (Editor.Caret.Line);
 
 					// Engine state is now invalid
 					stateTracker.ResetEngineToPosition (pos);

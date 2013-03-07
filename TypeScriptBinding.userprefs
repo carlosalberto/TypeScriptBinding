@@ -2,10 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs">
     <Files>
-      <File FileName="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs" Line="427" Column="18" />
+      <File FileName="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs" Line="370" Column="1" />
       <File FileName="TypeScript.Formatting/TypeScriptIndentEngine.cs" Line="93" Column="3" />
       <File FileName="TypeScript.Formatting/TypeScriptIndentEngineStack.cs" Line="44" Column="3" />
-      <File FileName="TODO.txt" Line="4" Column="1" />
+      <File FileName="TODO.txt" Line="4" Column="112" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

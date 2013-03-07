@@ -1,3 +1,5 @@
 
 * Look for a CSharpFormatter and move it here.
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
+* EditorIndentation.GuessSemicolon..() takes into account get/set. I'm not very sure we have them around for TS.
+* Add support for on-fly-formatting.

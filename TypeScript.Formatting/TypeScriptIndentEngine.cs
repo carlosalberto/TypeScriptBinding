@@ -75,22 +75,21 @@ namespace TypeScript.Formatting
 		int currLineNumber;
 		int cursor;
 		TypeScriptFormattingPolicy policy;
-		//TextStylePolicy textPolicy;
+		TextStylePolicy textPolicy;
 
 		//
 		// Constructors
 		//
 
-		//public TypeScriptIndentEngine (TypeScriptFormattingPolicy policy, TextStylePolicy textPolicy)
-		public TypeScriptIndentEngine (TypeScriptFormattingPolicy policy)
+		public TypeScriptIndentEngine (TypeScriptFormattingPolicy policy, TextStylePolicy textPolicy)
 		{
 			if (policy == null)
 				throw new ArgumentNullException ("policy");
-			/*if (textPolicy == null)
-				throw new ArgumentNullException ("textPolicy");*/
+			if (textPolicy == null)
+				throw new ArgumentNullException ("textPolicy");
 
 			this.policy = policy;
-			//this.textPolicy = textPolicy;
+			this.textPolicy = textPolicy;
 			stack = new IndentStack (this);
 			linebuf = new StringBuilder ();
 			Reset ();
@@ -120,10 +119,6 @@ namespace TypeScript.Formatting
 			get { return stack.Count; }
 		}
 		
-		public bool IsInsideVerbatimString {
-			get { return stack.PeekInside (0) == Inside.VerbatimString; }
-		}
-		
 		public bool IsInsideMultiLineComment {
 			get { return stack.PeekInside (0) == Inside.MultiLineComment; }
 		}
@@ -142,6 +137,10 @@ namespace TypeScript.Formatting
 		
 		public bool IsInsideComment {
 			get { return (stack.PeekInside (0) & (Inside.LineComment | Inside.MultiLineComment | Inside.DocComment)) != 0; }
+		}
+
+		public bool IsInsideString {
+			get { return (stack.PeekInside (0) & (Inside.DoubleQuotedString | Inside.SingleQuotedString)) != 0; }
 		}
 
 		
@@ -219,9 +218,8 @@ namespace TypeScript.Formatting
 		// to test things w/o changing the real indent engine state
 		public object Clone ()
 		{
-			//TypeScriptIndentEngine engine = new TypeScriptIndentEngine (policy, textPolicy);
-			TypeScriptIndentEngine engine = new TypeScriptIndentEngine (policy);
-			
+			TypeScriptIndentEngine engine = new TypeScriptIndentEngine (policy, textPolicy);
+
 			engine.stack = (IndentStack) stack.Clone ();
 			engine.linebuf = new StringBuilder (linebuf.ToString (), linebuf.Capacity);
 			
