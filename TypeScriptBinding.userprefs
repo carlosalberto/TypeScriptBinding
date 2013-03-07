@@ -1,18 +1,31 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TypeScript.Main/TypeScriptLanguageBinding.cs">
     <Files>
-      <File FileName="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs" Line="370" Column="1" />
-      <File FileName="TypeScript.Formatting/TypeScriptIndentEngine.cs" Line="93" Column="3" />
-      <File FileName="TypeScript.Formatting/TypeScriptIndentEngineStack.cs" Line="44" Column="3" />
-      <File FileName="TODO.txt" Line="4" Column="112" />
+      <File FileName="TypeScript.Formatting/TypeScriptTextEditorIndentation.cs" Line="142" Column="40" />
+      <File FileName="TypeScript.Formatting/TypeScriptIndentEngine.cs" Line="105" Column="2" />
+      <File FileName="../monodevelop/main/src/addins/CSharpBinding/MonoDevelop.CSharp.Formatting/OnTheFlyFormatter.cs" Line="1" Column="1" />
+      <File FileName="TODO.txt" Line="6" Column="48" />
+      <File FileName="TypeScriptBinding.addin.xml" Line="3" Column="5" />
+      <File FileName="../monodevelop/main/src/addins/CSharpBinding/MonoDevelop.CSharp/CSharpLanguageBinding.cs" Line="72" Column="89" />
+      <File FileName="../monodevelop/main/src/core/MonoDevelop.Core/MonoDevelop.Projects/IDotNetLanguageBinding.cs" Line="35" Column="53" />
+      <File FileName="../monodevelop/main/src/core/MonoDevelop.Core/MonoDevelop.Projects/ILanguageBinding.cs" Line="31" Column="2" />
+      <File FileName="TypeScript.Main/TypeScriptLanguageBinding.cs" Line="31" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="TypeScriptBinding" expanded="True">
-            <Node name="TypeScript.Formatting" expanded="True">
-              <Node name="TypeScriptTextEditorIndentation.cs" selected="True" />
+          <Node name="Addins" expanded="True">
+            <Node name="CSharpBinding" expanded="True">
+              <Node name="CSharpBinding" expanded="True">
+                <Node name="icons" expanded="True" />
+                <Node name="MonoDevelop.CSharp" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Core" expanded="True">
+            <Node name="MonoDevelop.Core" expanded="True">
+              <Node name="MonoDevelop.Projects" expanded="True" />
             </Node>
           </Node>
         </State>

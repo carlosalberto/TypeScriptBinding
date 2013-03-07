@@ -1,0 +1,64 @@
+<Addin id          = "TypeScriptBinding"
+       namespace   = "MonoDevelop"
+       name        = "TypeScript Language Binding"
+       author      = "Carlos Alberto Cortez"
+       copyright   = "MIT X11"
+       url         = "http://www.monodevelop.com/"
+       description = "TypeScript Language Binding"
+       category    = "Language bindings"
+       version     = "3.1.0">
+
+	<Dependencies>
+		<Addin id="Core" version="3.1.0"/>
+		<Addin id="Ide" version="3.1.0"/>
+		<Addin id="SourceEditor2" version="3.1.0"/>
+		<Addin id="Refactoring" version="3.1.0"/>
+	</Dependencies>
+
+	<ConditionType id="MSBuildTargetIsAvailable" type="MonoDevelop.Projects.Formats.MSBuild.TargetsAvailableCondition" />
+
+	<Extension path = "/MonoDevelop/ProjectModel/MSBuildItemTypes">
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Ide/FileTemplates">
+		<FileTemplate id = "TypeScriptEmptyFile" resource = "EmptyFile.xft.xml"/>
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Ide/ProjectTemplates">
+		<ProjectTemplate id = "TypeScriptEmptyProject" resource = "EmptyProject.xpt.xml"/>
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Ide/FileFilters">
+		<FileFilter id = "TypeScript"
+		            _label = "TypeScript Files"
+		            extensions = "*.ts"/>
+	</Extension>
+
+	<Extension path = "/MonoDevelop/ProjectModel/LanguageBindings">
+		<LanguageBinding id    = "TypeScript"
+		                 supportedextensions = ".ts"
+		                 class = "TypeScript.TypeScriptLanguageBinding" />
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Ide/TextEditorExtensions">
+		<!-- Based on what I saw in other bindings, we need to have the indentation one
+		before *everything* else.
+		-->
+		<Class fileExtensions = ".cs" class = "TypeScript.Formatting.TypeScriptTextEditorIndentation" />
+	</Extension>
+
+	<Extension path = "/MonoDevelop/ProjectModel/MD1SerializationMaps">
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Core/StockIcons">
+		<StockIcon stockid = "md-typescript-file" resource = "C#.FileIcon" size="Menu" />
+		<StockIcon stockid = "md-typescript-project" resource = "csharp-project-16.png" size="Menu"/>
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Core/MimeTypes">
+		<MimeType id="text/x-typescript" _description="TypeScript source code" icon="md-typescript-file" isText="true">
+			<File pattern="*.ts" />
+		</MimeType>
+	</Extension>
+
+</Addin>

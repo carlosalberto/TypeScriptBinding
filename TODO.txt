@@ -1,5 +1,19 @@
+IMMEDIATE:
+
+* Add a TypeScriptLanguageBinding
+* Simple empty file and project (xft and xpt).
+* Add some serializable classes (compiler params, project params).
+* Add some info in the msbuilditemtypes section?
 
 * Look for a CSharpFormatter and move it here.
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
 * EditorIndentation.GuessSemicolon..() takes into account get/set. I'm not very sure we have them around for TS.
-* Add support for on-fly-formatting.
+* Add support for on-fly-formatting (and formatting in general). -> Add the formatter in the addin def.
+* Add ambience.
+* Add a parser (this can be based on the TypeScript runtime itself).
+* Add syntax mode.
+* Add policy sets.
+* Add refactoring.
+* Add a resolver.
+* Add tooltip.
+* Replace icons with some correct ones.

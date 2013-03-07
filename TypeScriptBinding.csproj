@@ -68,12 +68,15 @@
     <Compile Include="TypeScript.Formatting\TypeScriptFormattingOptions.cs" />
     <Compile Include="TypeScript.Formatting\TypeScriptIndentEngineStack.cs" />
     <Compile Include="TypeScript.Formatting\TypeScriptTextEditorIndentation.cs" />
+    <Compile Include="TypeScript.Main\TypeScriptLanguageBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="TypeScript.Formatting\" />
+    <Folder Include="TypeScript.Main\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.txt" />
+    <None Include="TypeScriptBinding.addin.xml" />
   </ItemGroup>
 </Project>
