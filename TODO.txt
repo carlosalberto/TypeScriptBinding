@@ -4,6 +4,7 @@ IMMEDIATE:
 * Simple empty file and project (xft and xpt).
 * Add some serializable classes (compiler params, project params).
 * Add some info in the msbuilditemtypes section?
+* Add policy sets.
 
 * Look for a CSharpFormatter and move it here.
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
@@ -12,7 +13,6 @@ IMMEDIATE:
 * Add ambience.
 * Add a parser (this can be based on the TypeScript runtime itself).
 * Add syntax mode.
-* Add policy sets.
 * Add refactoring.
 * Add a resolver.
 * Add tooltip.

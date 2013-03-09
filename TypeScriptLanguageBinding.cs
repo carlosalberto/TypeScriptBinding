@@ -4,14 +4,10 @@ using System.IO;
 using MonoDevelop.Core;
 using MonoDevelop.Projects;
 
-namespace TypeScript.Main
+namespace TypeScriptBinding
 {
 	public class TypeScriptLanguageBinding : ILanguageBinding
 	{
-		public TypeScriptLanguageBinding ()
-		{
-		}
-
 		public string Language {
 			get { return "TypeScript"; }
 		}

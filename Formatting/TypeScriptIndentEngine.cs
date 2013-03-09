@@ -83,10 +83,13 @@ namespace TypeScript.Formatting
 
 		public TypeScriptIndentEngine (TypeScriptFormattingPolicy policy, TextStylePolicy textPolicy)
 		{
+			/*
 			if (policy == null)
 				throw new ArgumentNullException ("policy");
+
 			if (textPolicy == null)
 				throw new ArgumentNullException ("textPolicy");
+			*/
 
 			this.policy = policy;
 			this.textPolicy = textPolicy;
@@ -542,7 +545,8 @@ namespace TypeScript.Formatting
 					}
 				}
 				
-				if (!policy.IndentSwitchBody) {
+				//if (!policy.IndentSwitchBody) {
+				if (true) {
 					needsReindent = true;
 					TrimIndent ();
 				}

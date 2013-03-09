@@ -60,23 +60,31 @@
       <Private>False</Private>
       <Package>monodevelop</Package>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="TypeScript.Formatting\TypeScriptIndentEngine.cs" />
-    <Compile Include="TypeScript.Formatting\TypeScriptFormattingPolicy.cs" />
-    <Compile Include="TypeScript.Formatting\TypeScriptFormattingOptions.cs" />
-    <Compile Include="TypeScript.Formatting\TypeScriptIndentEngineStack.cs" />
-    <Compile Include="TypeScript.Formatting\TypeScriptTextEditorIndentation.cs" />
-    <Compile Include="TypeScript.Main\TypeScriptLanguageBinding.cs" />
+    <Compile Include="TypeScriptLanguageBinding.cs" />
+    <Compile Include="Formatting\TypeScriptIndentEngine.cs" />
+    <Compile Include="Formatting\TypeScriptFormattingPolicy.cs" />
+    <Compile Include="Formatting\TypeScriptFormattingOptions.cs" />
+    <Compile Include="Formatting\TypeScriptIndentEngineStack.cs" />
+    <Compile Include="Formatting\TypeScriptTextEditorIndentation.cs" />
+    <Compile Include="Project\TypeScriptProjectBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="TypeScript.Formatting\" />
-    <Folder Include="TypeScript.Main\" />
+    <Folder Include="Formatting\" />
+    <Folder Include="Project\" />
+    <Folder Include="templates\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.txt" />
-    <None Include="TypeScriptBinding.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TypeScriptBinding.addin.xml" />
+    <EmbeddedResource Include="templates\EmptyFile.xft.xml">
+      <LogicalName>EmptyFile.xft.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -18,6 +18,7 @@
 	<ConditionType id="MSBuildTargetIsAvailable" type="MonoDevelop.Projects.Formats.MSBuild.TargetsAvailableCondition" />
 
 	<Extension path = "/MonoDevelop/ProjectModel/MSBuildItemTypes">
+		<SolutionItem type="TypeScript.TypeScriptProject" extension="ts" guid="f32ce364-68cf-4247-82b7-bcc9e22cee32" />
 	</Extension>
 
 	<Extension path = "/MonoDevelop/Ide/FileTemplates">
@@ -31,20 +32,21 @@
 	<Extension path = "/MonoDevelop/Ide/FileFilters">
 		<FileFilter id = "TypeScript"
 		            _label = "TypeScript Files"
+		            insertbefore = "AllFiles"
 		            extensions = "*.ts"/>
 	</Extension>
 
 	<Extension path = "/MonoDevelop/ProjectModel/LanguageBindings">
 		<LanguageBinding id    = "TypeScript"
 		                 supportedextensions = ".ts"
-		                 class = "TypeScript.TypeScriptLanguageBinding" />
+		                 class = "TypeScriptBinding.TypeScriptLanguageBinding" />
 	</Extension>
 
 	<Extension path = "/MonoDevelop/Ide/TextEditorExtensions">
 		<!-- Based on what I saw in other bindings, we need to have the indentation one
 		before *everything* else.
 		-->
-		<Class fileExtensions = ".cs" class = "TypeScript.Formatting.TypeScriptTextEditorIndentation" />
+		<Class fileExtensions = ".ts" class = "TypeScript.Formatting.TypeScriptTextEditorIndentation" />
 	</Extension>
 
 	<Extension path = "/MonoDevelop/ProjectModel/MD1SerializationMaps">
