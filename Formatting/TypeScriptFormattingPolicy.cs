@@ -1,5 +1,5 @@
 // 
-// CSharpFormattingPolicy.cs
+// TypeScriptFormattingPolicy.cs
 //  
 // Author:
 //       Mike Krüger <mkrueger@novell.com>
@@ -33,6 +33,8 @@ using System.Text;
 using System.Linq;
 using MonoDevelop.Projects.Policies;
 //using ICSharpCode.NRefactory.CSharp;
+
+// This is a port/copy of the C# one.
 
 namespace TypeScript.Formatting
 {

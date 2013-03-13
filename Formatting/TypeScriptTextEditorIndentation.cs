@@ -3,6 +3,7 @@
 //
 // Author:
 //   Mike Krüger <mkrueger@novell.com>
+//   Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //
 // Copyright (C) 2008 Novell, Inc (http://www.novell.com)
 //

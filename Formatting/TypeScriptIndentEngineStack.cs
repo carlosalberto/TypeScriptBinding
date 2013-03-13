@@ -2,6 +2,7 @@
 // TypeScriptIndentEngineStack.cs
 //
 // Author: Jeffrey Stedfast <fejj@novell.com>
+//         Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //
 // Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
