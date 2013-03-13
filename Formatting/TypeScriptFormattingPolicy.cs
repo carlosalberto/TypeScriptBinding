@@ -36,7 +36,7 @@ using MonoDevelop.Projects.Policies;
 
 // This is a port/copy of the C# one.
 
-namespace TypeScript.Formatting
+namespace TypeScriptBinding.Formatting
 {
 	//[PolicyType ("TypeScript formatting")]
 	public class TypeScriptFormattingPolicy : IEquatable<TypeScriptFormattingPolicy>

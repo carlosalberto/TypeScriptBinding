@@ -29,7 +29,7 @@
 using System;
 using System.Text;
 
-namespace TypeScript.Formatting
+namespace TypeScriptBinding.Formatting
 {
 	public partial class TypeScriptIndentEngine : ICloneable {
 		public enum Inside {

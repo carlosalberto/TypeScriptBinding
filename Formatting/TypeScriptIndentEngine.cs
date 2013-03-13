@@ -32,7 +32,7 @@ using System.Text;
 
 using MonoDevelop.Ide.Gui.Content;
 
-namespace TypeScript.Formatting
+namespace TypeScriptBinding.Formatting
 {
 	public partial class TypeScriptIndentEngine :
 		ICloneable, IDocumentStateEngine

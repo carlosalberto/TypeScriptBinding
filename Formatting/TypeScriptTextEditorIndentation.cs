@@ -43,7 +43,7 @@ using MonoDevelop.Ide.CodeTemplates;
 using MonoDevelop.Ide.TypeSystem;
 using MonoDevelop.SourceEditor;
 
-namespace TypeScript.Formatting
+namespace TypeScriptBinding.Formatting
 {
 	public class TypeScriptTextEditorIndentation : TextEditorExtension
 	{

@@ -46,7 +46,7 @@
 		<!-- Based on what I saw in other bindings, we need to have the indentation one
 		before *everything* else.
 		-->
-		<Class fileExtensions = ".ts" class = "TypeScript.Formatting.TypeScriptTextEditorIndentation" />
+		<Class fileExtensions = ".ts" class = "TypeScriptBinding.Formatting.TypeScriptTextEditorIndentation" />
 	</Extension>
 
 	<Extension path = "/MonoDevelop/ProjectModel/MD1SerializationMaps">
