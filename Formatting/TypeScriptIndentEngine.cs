@@ -1,7 +1,8 @@
 //
-// CSharpIndentEngine.cs
+// TypeScriptIndentEngine.cs
 //
 // Author: Jeffrey Stedfast <fejj@novell.com>
+//         Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //
 // Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
@@ -31,8 +32,6 @@ using System.Text;
 
 using MonoDevelop.Ide.Gui.Content;
 
-//using MonoDevelop.CSharp.Parser;
-
 namespace TypeScript.Formatting
 {
 	public partial class TypeScriptIndentEngine :
@@ -47,7 +46,7 @@ namespace TypeScript.Formatting
 		
 		string keyword;
 		
-		string curIndent;
+		string currIndent;
 		
 		Inside beganInside;
 		
@@ -143,7 +142,7 @@ namespace TypeScript.Formatting
 		}
 
 		public bool IsInsideString {
-			get { return (stack.PeekInside (0) & (Inside.DoubleQuotedString | Inside.SingleQuotedString)) != 0; }
+			get { return (stack.PeekInside (0) & Inside.String) != 0; }
 		}
 
 		
@@ -174,7 +173,7 @@ namespace TypeScript.Formatting
 				if (textPolicy.TabsToSpaces)
 					return TabsToSpaces (curIndent);*/
 				
-				return curIndent;
+				return currIndent;
 			}
 		}
 		
@@ -198,7 +197,7 @@ namespace TypeScript.Formatting
 			linebuf.Length = 0;
 
 			keyword = String.Empty;
-			curIndent = String.Empty;
+			currIndent = String.Empty;
 
 			needsReindent = false;
 			popVerbatim = false;
@@ -217,17 +216,17 @@ namespace TypeScript.Formatting
 			cursor = 0;
 		}
 		
-		// Clone the CSharpIndentEngine - useful if a consumer of this class wants
+		// Clone the TypeScriptIndentEngine - useful if a consumer of this class wants
 		// to test things w/o changing the real indent engine state
 		public object Clone ()
 		{
-			TypeScriptIndentEngine engine = new TypeScriptIndentEngine (policy, textPolicy);
+			var engine = new TypeScriptIndentEngine (policy, textPolicy);
 
 			engine.stack = (IndentStack) stack.Clone ();
 			engine.linebuf = new StringBuilder (linebuf.ToString (), linebuf.Capacity);
 			
 			engine.keyword = keyword;
-			engine.curIndent = curIndent;
+			engine.currIndent = currIndent;
 			
 			engine.needsReindent = needsReindent;
 			engine.popVerbatim = popVerbatim;
@@ -254,14 +253,14 @@ namespace TypeScript.Formatting
 			case Inside.FoldedStatement:
 			case Inside.Block:
 			case Inside.Case:
-				if (curIndent == String.Empty)
+				if (currIndent == String.Empty)
 					return;
 				
 				// chop off the last tab (e.g. unindent 1 level)
-				curIndent = curIndent.Substring (0, curIndent.Length - 1);
+				currIndent = currIndent.Substring (0, currIndent.Length - 1);
 				break;
 			default:
-				curIndent = stack.PeekIndent (0);
+				currIndent = stack.PeekIndent (0);
 				break;
 			}
 		}
@@ -271,36 +270,34 @@ namespace TypeScript.Formatting
 		static bool KeywordIsSpecial (string keyword)
 		{
 			string[] specials = new string [] {
-				"foreach",
 				"while",
 				"for",
 				"else",
 				"if"
 			};
 			
-			for (int i = 0; i < specials.Length; i++) {
+			for (int i = 0; i < specials.Length; i++)
 				if (keyword == specials[i])
 					return true;
-			}
 			
 			return false;
 		}
 		
 		static readonly string[] keywords = new string [] {
-			"namespace",
+			"module",
 			"interface",
-			"struct",
 			"class",
+			"extends",
+			"implements",
 			"enum",
 			"switch",
 			"case",
-			"foreach",
 			"while",
 			"for",
 			"do",
 			"else",
 			"if",
-			"base",
+			"super",
 			"this",
 			"=",
 			"return"
@@ -313,10 +310,9 @@ namespace TypeScript.Formatting
 		{
 			string str = linebuf.ToString (wordStart, Math.Min (linebuf.Length - wordStart, maxKeywordLength));
 			
-			for (int i = 0; i < keywords.Length; i++) {
+			for (int i = 0; i < keywords.Length; i++)
 				if (str == keywords[i])
 					return keywords[i];
-			}
 			
 			return null;
 		}
@@ -328,13 +324,17 @@ namespace TypeScript.Formatting
 			return str == "default";
 		}
 		
-		//directive keywords that we care about
+		// directive keywords that we care about
 		static string[] directiveKeywords = new string [] {"region", "endregion" };
-		
+
+		//
+		// TODO: Does TypeScript even support regions?
+		//
 		string GetDirectiveKeyword (char currentChar)
 		{
-			if (currentChar != ' ' && currentChar != '\t' && currentChar != '\n')
+			if (!Char.IsWhiteSpace (currentChar) && currentChar != '\t' && currentChar != '\n')
 				return null;
+
 			string str = linebuf.ToString ().TrimStart ().Substring (1);
 			
 			if (str.Length == 0)
@@ -349,7 +349,7 @@ namespace TypeScript.Formatting
 				}
 			}
 			
-			return string.Empty;
+			return String.Empty;
 		}
 		
 		bool Folded2LevelsNonSpecial ()
@@ -359,7 +359,9 @@ namespace TypeScript.Formatting
 				!KeywordIsSpecial (stack.PeekKeyword (0)) &&
 				!KeywordIsSpecial (keyword);
 		}
-		
+
+		// LASTPOINT - I think we need to read what FoldedClassDeclaration
+		// is about - maybe we should put here either super/implements/extends.
 		bool FoldedClassDeclaration ()
 		{
 			return stack.PeekInside (0) == Inside.FoldedStatement &&
@@ -386,32 +388,15 @@ namespace TypeScript.Formatting
 			keyword = String.Empty;
 		}
 		
-		// Handlers for specific characters
-		void PushHash (Inside inside)
-		{
-			// ignore if we are inside a string, char, or comment
-			if ((inside & (Inside.String | Inside.Comment)) != 0)
-				return;
-
-			// FIXME or REMOVE ME.
-			// ignore if '#' is not the first significant char on the line
-			/*if (rc != '\0')
-				return;
-			
-			stack.Push (Inside.PreProcessor, null, curLineNr, 0);
-			
-			curIndent = String.Empty;
-			needsReindent = false;*/
-		}
-		
 		void PushSlash (Inside inside)
 		{
-			// ignore these
 			if ((inside & (Inside.String)) != 0)
 				return;
+
 			if (inside == Inside.LineComment) {
 				stack.Pop (); // pop line comment
 				stack.Push (Inside.DocComment, keyword, currLineNumber, 0);
+
 			} else if (inside == Inside.MultiLineComment) {
 				// check for end of multi-line comment block
 				if (pc == '*') {
@@ -419,6 +404,7 @@ namespace TypeScript.Formatting
 					keyword = stack.PeekKeyword (0);
 					stack.Pop ();
 				}
+
 			} else {
 				
 				// FoldedStatement, Block, Attribute or ParenList
@@ -441,20 +427,15 @@ namespace TypeScript.Formatting
 		
 		void PushStar (Inside inside)
 		{
-			int n;
-			
 			if (pc != '/')
 				return;
 			
 			// got a "/*" - might start a MultiLineComment
-			if ((inside & (Inside.String | Inside.Comment)) != 0) {
-//				if ((inside & Inside.MultiLineComment) != 0)
-//					Console.WriteLine ("Watch out! Nested /* */ comment detected!");
+			if ((inside & (Inside.String | Inside.Comment)) != 0)
 				return;
-			}
 			
 			// push a new multiline comment onto the stack
-			n = linebuf.Length - firstNonLwsp;
+			int n = linebuf.Length - firstNonLwsp;
 
 			stack.Push (Inside.MultiLineComment, keyword, currLineNumber, n);
 			
@@ -469,19 +450,8 @@ namespace TypeScript.Formatting
 			// ignore if in these
 			if ((inside & (Inside.Comment | Inside.SingleQuotedString)) != 0)
 				return;
-			
-			if (inside == Inside.VerbatimString) {
-				if (popVerbatim) {
-					// back in the verbatim-string-literal token
-					popVerbatim = false;
-				} else {
-					/* need to see the next char before we pop the
-					 * verbatim-string-literal */
-					popVerbatim = true;
-				}
-				// FIXME
-			//} else if (inside == Inside.StringLiteral) {
-			} else if (inside == Inside.DoubleQuotedString) {
+
+			if (inside == Inside.DoubleQuotedString) {
 				// check that it isn't escaped
 				if (!isEscaped) {
 					keyword = stack.PeekKeyword (0);
@@ -489,10 +459,7 @@ namespace TypeScript.Formatting
 				}
 			} else {
 				// FoldedStatement, Block, Attribute or ParenList
-				if (pc == '@')
-					type = Inside.VerbatimString;
-				else
-					type = Inside.DoubleQuotedString;
+				type = Inside.DoubleQuotedString;
 				
 				// push a new string onto the stack
 				stack.Push (type, keyword, currLineNumber, 0);
@@ -501,10 +468,8 @@ namespace TypeScript.Formatting
 		
 		void PushSQuote (Inside inside)
 		{
-			if ((inside & (Inside.DoubleQuotedString | Inside.Comment)) != 0) {
-				// won't be starting a CharLiteral, so ignore it
+			if ((inside & (Inside.DoubleQuotedString | Inside.Comment)) != 0)
 				return;
-			}
 			
 			if (inside == Inside.SingleQuotedString) {
 				// check that it's not escaped
@@ -519,7 +484,10 @@ namespace TypeScript.Formatting
 			// push a new char literal onto the stack 
 			stack.Push (Inside.SingleQuotedString, keyword, currLineNumber, 0);
 		}
-		
+	
+		// LASTPOINT 2 - do we support labels?
+		// if not, just wipe out the commented code above
+		// (or was it commented already, in the original, anyway?)
 		void PushColon (Inside inside)
 		{
 			if (inside != Inside.Block && inside != Inside.Case)
@@ -539,8 +507,8 @@ namespace TypeScript.Formatting
 					stack.Pop ();
 					
 					string newIndent = stack.PeekIndent (0);
-					if (curIndent != newIndent) {
-						curIndent = newIndent;
+					if (currIndent != newIndent) {
+						currIndent = newIndent;
 						needsReindent = true;
 					}
 				}
@@ -574,7 +542,7 @@ namespace TypeScript.Formatting
 				canBeLabel = false;
 			} else if (pc == ':') {
 				// :: operator, need to undo the "unindent label" operation we did for the previous ':'
-				curIndent = stack.PeekIndent (0);
+				currIndent = stack.PeekIndent (0);
 				needsReindent = true;
 			}
 		}
@@ -591,35 +559,6 @@ namespace TypeScript.Formatting
 			}
 			
 			keyword = String.Empty;
-		}
-		
-		void PushOpenSq (Inside inside)
-		{
-			int n = 1;
-			
-			if ((inside & (Inside.String | Inside.Comment)) != 0)
-				return;
-			
-			// push a new attribute onto the stack
-			if (firstNonLwsp != -1)
-				n += linebuf.Length - firstNonLwsp;
-			
-			stack.Push (Inside.Attribute, keyword, currLineNumber, n);
-		}
-		
-		void PushCloseSq (Inside inside)
-		{
-			if ((inside & (Inside.String | Inside.Comment)) != 0)
-				return;
-			
-			if (inside != Inside.Attribute) {
-				//Console.WriteLine ("can't pop a '[' if we ain't got one?");
-				return;
-			}
-			
-			// pop this attribute off the stack
-			keyword = stack.PeekKeyword (0);
-			stack.Pop ();
 		}
 		
 		void PushOpenParen (Inside inside)
@@ -643,10 +582,8 @@ namespace TypeScript.Formatting
 			if ((inside & (Inside.String | Inside.Comment)) != 0)
 				return;
 			
-			if (inside != Inside.ParenList) {
-				//Console.WriteLine ("can't pop a '(' if we ain't got one?");
+			if (inside != Inside.ParenList)				
 				return;
-			}
 			
 			// pop this paren list off the stack
 			keyword = stack.PeekKeyword (0);
@@ -657,6 +594,7 @@ namespace TypeScript.Formatting
 		{
 			if ((inside & (Inside.String | Inside.Comment)) != 0)
 				return;
+
 			// push a new block onto the stack
 			if (inside == Inside.FoldedStatement) {
 				string pKeyword;
@@ -671,17 +609,19 @@ namespace TypeScript.Formatting
 				while (true) {
 					if (stack.PeekInside (0) != Inside.FoldedStatement)
 						break;
+
 					string kw = stack.PeekKeyword (0);
 					stack.Pop ();
 					TrimIndent ();
-					if (!string.IsNullOrEmpty (kw)) {
+
+					if (!String.IsNullOrEmpty (kw)) {
 						pKeyword = kw;
 						break;
 					}
 				}
 				
 				if (firstNonLwsp == -1)
-					curIndent = stack.PeekIndent (0);
+					currIndent = stack.PeekIndent (0);
 				
 				stack.Push (Inside.Block, pKeyword, currLineNumber, 0);
 			} else if (inside == Inside.Case && (keyword == "default" || keyword == "case")) {
@@ -716,24 +656,25 @@ namespace TypeScript.Formatting
 					while (stack.PeekInside (0) == Inside.FoldedStatement) {
 						stack.Pop ();
 					}
-					curIndent = stack.PeekIndent (0);
+
+					currIndent = stack.PeekIndent (0);
 					keyword = stack.PeekKeyword (0);
 					inside = stack.PeekInside (0);
 				}
-				//Console.WriteLine ("can't pop a '{' if we ain't got one?");
+
 				if (inside != Inside.Block && inside != Inside.Case)
 					return;
 			}
 
 			if (inside == Inside.Case) {
-				curIndent = stack.PeekIndent (1);
+				currIndent = stack.PeekIndent (1);
 				keyword = stack.PeekKeyword (0);
 				inside = stack.PeekInside (1);
 				stack.Pop ();
 			}
 			
 			if (inside == Inside.ParenList) {
-				curIndent = stack.PeekIndent (0);
+				currIndent = stack.PeekIndent (0);
 				keyword = stack.PeekKeyword (0);
 				inside = stack.PeekInside (0);
 			}
@@ -753,20 +694,11 @@ namespace TypeScript.Formatting
 				TrimIndent ();
 			}
 		}
-		
+
 		void PushNewLine (Inside inside)
 		{
 			top:
 			switch (inside) {
-				// FIXME REMOVE ME
-			/*case Inside.PreProcessor:
-				// pop the preprocesor state unless the eoln is escaped
-				if (rc != '\\') {
-					keyword = stack.PeekKeyword (0);
-					stack.Pop ();
-				}
-				break;
-				*/
 			case Inside.MultiLineComment:
 				// nothing to do
 				break;
@@ -779,26 +711,10 @@ namespace TypeScript.Formatting
 				inside = stack.PeekInside (0);
 				goto top;
 			case Inside.DoubleQuotedString:
-				if (isEscaped) {
-					/* I don't think c# allows breaking a
-					 * normal string across lines even
-					 * when escaping the carriage
-					 * return... but how else should we
-					 * handle this? */
-					break;
-				}
-
-								/* not escaped... error!! but what can we do,
-				 * eh? allow folding across multiple lines I
-				 * guess... */
+				// Handle it somewhere else.
 				break;
 			case Inside.SingleQuotedString:
-				// FIXME COMMENT
-				/* this is an error... what to do? guess we'll
-				 * just pretend it never happened */
-				break;
-			case Inside.Attribute:
-				// nothing to do
+				// Handle it somewhere else.
 				break;
 			case Inside.ParenList:
 				// nothing to do
@@ -841,16 +757,15 @@ namespace TypeScript.Formatting
 				default:
 					if (stack.PeekLineNumber (0) == currLineNumber) {
 						// is this right? I don't remember why I did this...
+						// (original note from Jeff)
 						break;
 					}
 
 					if (inside == Inside.Block) {
-						if (stack.PeekKeyword (0) == "struct" ||
-							stack.PeekKeyword (0) == "enum" ||
-								stack.PeekKeyword (0) == "=") {
+						var k = stack.PeekKeyword (0);
+						if (k == "enum" || k == "=")
 							// just variable/value declarations
 							break;
-						}
 					}
 
 					PushFoldedStatement ();
@@ -863,7 +778,7 @@ namespace TypeScript.Formatting
 			linebuf.Length = 0;
 			
 			beganInside = stack.PeekInside (0);
-			curIndent = stack.PeekIndent (0);
+			currIndent = stack.PeekIndent (0);
 			
 			canBeLabel = true;
 			
@@ -895,25 +810,16 @@ namespace TypeScript.Formatting
 		public void Push (char c)
 		{
 			Inside inside, after;
-			
 			inside = stack.PeekInside (0);
-			
-			// pop the verbatim-string-literal
-			if (inside == Inside.VerbatimString && popVerbatim && c != '"') {
-				keyword = stack.PeekKeyword (0);
-				popVerbatim = false;
-				stack.Pop ();
-				
-				inside = stack.PeekInside (0);
-			}
 			
 			needsReindent = false;
 			
 			if ((inside & (Inside.String | Inside.Comment)) == 0 && wordStart != -1) {
-				if (char.IsWhiteSpace (c) || c == '(' || c == '{') {
+				if (Char.IsWhiteSpace (c) || c == '(' || c == '{') {
 					string tmp = WordIsKeyword ();
 					if (tmp != null)
 						keyword = tmp;
+
 				} else if (c == ':' && WordIsDefault ()) {
 					keyword = "default";
 				}	
@@ -922,10 +828,6 @@ namespace TypeScript.Formatting
 			//Console.WriteLine ("Pushing '{0}'/#{3}; wordStart = {1}; keyword = {2}", c, wordStart, keyword, (int)c);
 			
 			switch (c) {
-			case '#':
-				PushHash (inside);
-				lastChar = '#';
-				break;
 			case '/':
 				PushSlash (inside);
 				break;
@@ -946,12 +848,6 @@ namespace TypeScript.Formatting
 				break;
 			case ';':
 				PushSemicolon (inside);
-				break;
-			case '[':
-				PushOpenSq (inside);
-				break;
-			case ']':
-				PushCloseSq (inside);
 				break;
 			case '(':
 				PushOpenParen (inside);
@@ -1056,17 +952,11 @@ namespace TypeScript.Formatting
 				case Inside.LineComment:
 					Console.WriteLine ("\t// comment");
 					break;
-				case Inside.VerbatimString:
-					Console.WriteLine ("\tverbatim string");
-					break;
 				case Inside.DoubleQuotedString:
 					Console.WriteLine ("\tdouble quoted string");
 					break;
 				case Inside.SingleQuotedString:
 					Console.WriteLine ("\tsingle quoted string");
-					break;
-				case Inside.Attribute:
-					Console.WriteLine ("\t[ ] attribute");
 					break;
 				case Inside.ParenList:
 					Console.WriteLine ("\t( ) paren list");

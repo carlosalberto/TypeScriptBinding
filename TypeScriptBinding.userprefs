@@ -1,26 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="TODO.txt">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Formatting/TypeScriptIndentEngine.cs">
     <Files>
-      <File FileName="TypeScriptBinding.addin.xml" Line="35" Column="33" />
-      <File FileName="Formatting/TypeScriptIndentEngine.cs" Line="91" Column="49" />
-      <File FileName="../monodevelop/main/src/addins/CSharpBinding/CSharpBinding.addin.xml" Line="171" Column="53" />
-      <File FileName="TODO.txt" Line="7" Column="19" />
+      <File FileName="Formatting/TypeScriptIndentEngine.cs" Line="729" Column="35" />
+      <File FileName="Formatting/TypeScriptIndentEngineStack.cs" Line="62" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Addins" expanded="True">
-            <Node name="CSharpBinding" expanded="True">
-              <Node name="CSharpBinding" expanded="True">
-                <Node name="templates" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Core" expanded="True">
-            <Node name="MonoDevelop.Core" expanded="True">
-              <Node name="MonoDevelop.Projects" expanded="True" />
-            </Node>
+          <Node name="TypeScriptBinding" expanded="True" selected="True">
+            <Node name="Formatting" expanded="True" />
           </Node>
         </State>
       </Pad>

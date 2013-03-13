@@ -5,6 +5,8 @@ IMMEDIATE:
 * Add some serializable classes (compiler params, project params).
 * Add some info in the msbuilditemtypes section?
 * Add policy sets.
+	* When we do this, we can re-enable tab-to-spaces support.
+* Move TypeScript namespace to TypeScriptBinding.
 
 * Look for a CSharpFormatter and move it here.
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
@@ -17,3 +19,4 @@ IMMEDIATE:
 * Add a resolver.
 * Add tooltip.
 * Replace icons with some correct ones.
+* Looks like enum declarations are gonna change a little while. Check later and update.

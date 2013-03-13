@@ -28,9 +28,6 @@
 using System;
 using System.Text;
 
-//using MonoDevelop.CSharp.Parser;
-//using MonoDevelop.Core;
-
 namespace TypeScript.Formatting
 {
 	public partial class TypeScriptIndentEngine : ICloneable {
@@ -41,13 +38,11 @@ namespace TypeScript.Formatting
 			LineComment        = (1 << 2),
 			DocComment         = (1 << 11),
 			Comment            = (MultiLineComment | LineComment | DocComment),
-			
-			VerbatimString     = (1 << 3), // REMOVE ME
+
 			DoubleQuotedString = (1 << 4),
 			SingleQuotedString = (1 << 5),
 			String             = (DoubleQuotedString | SingleQuotedString),
 
-			Attribute          = (1 << 6),
 			ParenList          = (1 << 7),
 			
 			FoldedStatement    = (1 << 8),
@@ -128,7 +123,7 @@ namespace TypeScript.Formatting
 				int n = 0;
 				
 				indentBuilder = new StringBuilder ();
-				if ((inside & (Inside.Attribute | Inside.ParenList)) != 0) {
+				if ((inside & Inside.ParenList) != 0) {
 					if (count > 0 && stack[sp].inside == inside) {
 						while (sp >= 0) {
 							if ((stack[sp].inside & Inside.FoldedOrBlock) != 0)
