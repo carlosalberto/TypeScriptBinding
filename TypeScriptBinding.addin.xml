@@ -62,5 +62,9 @@
 			<File pattern="*.ts" />
 		</MimeType>
 	</Extension>
+	
+	<Extension path = "/MonoDevelop/TypeSystem/Ambiences">
+		<Ambience mimeType="text/x-typescript" class = "TypeScriptBinding.Formatting.TypeScriptAmbience" />
+	</Extension>
 
 </Addin>

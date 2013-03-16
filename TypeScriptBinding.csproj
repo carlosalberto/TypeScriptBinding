@@ -71,6 +71,7 @@
     <Compile Include="Formatting\TypeScriptIndentEngineStack.cs" />
     <Compile Include="Formatting\TypeScriptTextEditorIndentation.cs" />
     <Compile Include="Project\TypeScriptProjectBinding.cs" />
+    <Compile Include="Formatting\TypeScriptAmbience.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
