@@ -577,13 +577,12 @@ namespace TypeScriptBinding.Formatting
 				textEditorData.EnsureCaretIsNotVirtual ();
 				string commentPrefix = string.Empty;
 
-				if (trimmedPreviousLine.StartsWith ("* ")) {
+				if (trimmedPreviousLine.StartsWith ("* "))
 					commentPrefix = "* ";
-				} else if (trimmedPreviousLine.StartsWith ("/**") || trimmedPreviousLine.StartsWith ("/*")) {
+				else if (trimmedPreviousLine.StartsWith ("/**") || trimmedPreviousLine.StartsWith ("/*"))
 					commentPrefix = " * ";
-				} else if (trimmedPreviousLine.StartsWith ("*")) {
+				else if (trimmedPreviousLine.StartsWith ("*"))
 					commentPrefix = "*";
-				}
 
 				int indentSize = line.GetIndentation (document).Length;
 				var insertedText = prevLine.GetIndentation (document) + commentPrefix;
@@ -593,7 +592,7 @@ namespace TypeScriptBinding.Formatting
 				return true;
 
 			} else if (stateTracker.Engine.IsInsideString) {
-				/* FIXME
+				/* FIXME- ADD ME
 				var lexer = new CSharpCompletionEngineBase.MiniLexer (textEditorData.Document.GetTextAt (0, prevLine.EndOffset));
 				lexer.Parse ();
 				if (!lexer.IsInString)
@@ -634,9 +633,6 @@ namespace TypeScriptBinding.Formatting
 			for (int i = cursor; i < line.EndOffset; i++)
 				ctx.Push (document.GetCharAt (i));
 				
-			// Yet another fucking issue: these nerds haven't realized
-			// how fucking crappy is no not know when a fucking offset
-			// is about the document, and when for the line. Go fuck yourselves.
 			int pos = line.Offset;
 			string currIndent = line.GetIndentation (document);
 			int nlwsp = currIndent.Length;
@@ -650,8 +646,8 @@ namespace TypeScriptBinding.Formatting
 
 				if (newIndent != currIndent) {
 					if (CompletionWindowManager.IsVisible) {
-						// FIXME - Jesus Christ - isn't there a fucking better, more modular
-						// cleaner, and logical way to let this thing know? FUCKING GOD.
+						// GOD: Why do we need to have completion stuff in the simple indent thing?
+
 						//if (pos < CompletionWindowManager.CodeCompletionContext.TriggerOffset)
 							//CompletionWindowManager.CodeCompletionContext.TriggerOffset -= nlwsp;
 					}

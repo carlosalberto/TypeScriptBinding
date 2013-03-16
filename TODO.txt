@@ -1,17 +1,17 @@
 IMMEDIATE:
 
+* Apply TextStylePolicy/TypeScriptFormattinPolicy
+	* When we do this, we can re-enable tab-to-spaces support.
+* Add MIME types for TS.
+* Add support for on-fly-formatting (and formatting in general). -> Add the formatter in the addin def.
+
 * Add a TypeScriptLanguageBinding
 * Simple empty file and project (xft and xpt).
 * Add some serializable classes (compiler params, project params).
 * Add some info in the msbuilditemtypes section?
-* Add policy sets.
-	* When we do this, we can re-enable tab-to-spaces support.
-* Move TypeScript namespace to TypeScriptBinding.
 
-* Look for a CSharpFormatter and move it here.
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
 * EditorIndentation.GuessSemicolon..() takes into account get/set. I'm not very sure we have them around for TS.
-* Add support for on-fly-formatting (and formatting in general). -> Add the formatter in the addin def.
 * Add ambience.
 * Add a parser (this can be based on the TypeScript runtime itself).
 * Add syntax mode.

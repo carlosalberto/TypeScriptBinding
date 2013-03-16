@@ -148,12 +148,10 @@ namespace TypeScriptBinding.Formatting
 		
 		string TabsToSpaces (string indent)
 		{
-			StringBuilder builder;
-
 			if (indent == String.Empty)
 				return String.Empty;
 			
-			builder = new StringBuilder ();
+			var builder = new StringBuilder ();
 			for (int i = 0; i < indent.Length; i++) {
 				if (indent[i] == '\t')
 					/* TODO: TextPolicy support.
@@ -320,7 +318,6 @@ namespace TypeScriptBinding.Formatting
 		bool WordIsDefault ()
 		{
 			string str = linebuf.ToString (wordStart, linebuf.Length - wordStart).Trim ();
-			
 			return str == "default";
 		}
 		
@@ -360,12 +357,11 @@ namespace TypeScriptBinding.Formatting
 				!KeywordIsSpecial (keyword);
 		}
 
-		// LASTPOINT - I think we need to read what FoldedClassDeclaration
-		// is about - maybe we should put here either super/implements/extends.
+		// Maybe we need to check 'extends'/'implements' as keywords too?
 		bool FoldedClassDeclaration ()
 		{
 			return stack.PeekInside (0) == Inside.FoldedStatement &&
-				(keyword == "base" || keyword == "class" || keyword == "interface");
+				(keyword == "class" || keyword == "interface");
 		}
 		
 		void PushFoldedStatement ()
@@ -869,45 +865,29 @@ namespace TypeScriptBinding.Formatting
 			case '\n':
 				CheckForParentList ();
 				
-				if (lastChar == '\r') {
+				if (lastChar == '\r')
 					cursor++;
-				} else {
+				else
 					PushNewLine (inside);
-				}
+
 				lastChar = c;
 				return;
 			default:
 				break;
 			}
 			after = stack.PeekInside (0);
-
-			// FIXME REMOVE ME
-			/*if ((after & Inside.PreProcessor) == Inside.PreProcessor) {
-				for (int i = 0; i < preProcessorIndents.Length; i++) {
-					int len = preProcessorIndents[i].Length - 1;
-					if (linebuf.Length < len)
-						continue;
-					
-					string str = linebuf.ToString (linebuf.Length - len, len) + c;
-					if (str == preProcessorIndents[i]) {
-						needsReindent = true;
-						break;
-					}
-				}
-			}*/
 			
 			if ((after & (Inside.String | Inside.Comment)) == 0) {
 				if (!Char.IsWhiteSpace (c)) {
 					if (firstNonLwsp == -1)
 						firstNonLwsp = linebuf.Length;
 					
-					if (wordStart != -1 && c != ':' && Char.IsWhiteSpace (pc)) {
+					if (wordStart != -1 && c != ':' && Char.IsWhiteSpace (pc))
 						// goto labels must be single word tokens
 						canBeLabel = false;
-					} else if (wordStart == -1 && Char.IsDigit (c)) {
+					else if (wordStart == -1 && Char.IsDigit (c))
 						// labels cannot start with a digit
 						canBeLabel = false;
-					}
 					
 					lastNonLwsp = linebuf.Length;
 					
@@ -925,8 +905,10 @@ namespace TypeScriptBinding.Formatting
 			
 			pc = c;
 			prc = rc;
+
 			// Note: even though PreProcessor directive chars are insignificant, we do need to
 			//       check for rc != '\\' at the end of a line.
+			// (Original note from Jeff and the C# indent engine. Feel like removing it...)
 			if ((inside & Inside.Comment) == 0 &&
 			    (after & Inside.Comment) == 0 &&
 			    !Char.IsWhiteSpace (c))

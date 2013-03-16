@@ -126,11 +126,13 @@ namespace TypeScriptBinding.Formatting
 				indentBuilder = new StringBuilder ();
 				if ((inside & Inside.ParenList) != 0) {
 					if (count > 0 && stack[sp].inside == inside) {
+
 						while (sp >= 0) {
 							if ((stack[sp].inside & Inside.FoldedOrBlock) != 0)
 								break;
 							sp--;
 						}
+
 						if (sp >= 0) {
 							indentBuilder.Append (stack[sp].indent);
 							if (stack[sp].lineNumber == lineNumber)
@@ -146,6 +148,7 @@ namespace TypeScriptBinding.Formatting
 							sp--;
 						}
 					}
+
 					if (nSpaces - n <= 0) {
 						indentBuilder.Append ('\t');
 					} else {
@@ -232,8 +235,8 @@ namespace TypeScriptBinding.Formatting
 			
 			public void Push (Inside inside, string keyword, int lineNumber, int nSpaces, string indent)
 			{
-				Node node;
-				
+				Node node = new Node ();
+
 				node.indent = indent;
 				node.keyword = keyword;
 				node.nSpaces = nSpaces;
