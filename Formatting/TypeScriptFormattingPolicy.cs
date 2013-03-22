@@ -43,7 +43,7 @@ namespace TypeScriptBinding.Formatting
 		// FIXME
 		//TypeScriptFormattingOptions options = FormattingOptionsFactory.CreateMono ();
 		TypeScriptFormattingOptions options = new TypeScriptFormattingOptions ();
-		
+
 		public string Name {
 			get;
 			set;
@@ -79,10 +79,10 @@ namespace TypeScriptBinding.Formatting
 		[ItemProperty]
 		public bool IndentModuleBody {
 			get {
-				return options.IndentNamespaceBody;
+				return options.IndentModuleBody;
 			}
 			set {
-				options.IndentNamespaceBody = value;
+				options.IndentModuleBody = value;
 			}
 		}
 		
@@ -200,12 +200,12 @@ namespace TypeScriptBinding.Formatting
 		
 		#region Braces
 		[ItemProperty]
-		public BraceStyle NamespaceBraceStyle {
+		public BraceStyle ModuleBraceStyle {
 			get {
-				return options.NamespaceBraceStyle;
+				return options.ModuleBraceStyle;
 			}
 			set {
-				options.NamespaceBraceStyle = value;
+				options.ModuleBraceStyle = value;
 			}
 		}
 		
@@ -359,16 +359,6 @@ namespace TypeScriptBinding.Formatting
 			}
 			set {
 				options.ForBraceForcement = value;
-			}
-		}
-		
-		[ItemProperty]
-		public BraceForcement ForEachBraceForcement {
-			get {
-				return options.ForEachBraceForcement;
-			}
-			set {
-				options.ForEachBraceForcement = value;
 			}
 		}
 		
@@ -707,58 +697,6 @@ namespace TypeScriptBinding.Formatting
 			}
 		}
 		
-		// delegates
-		
-		[ItemProperty]
-		public bool BeforeDelegateDeclarationParentheses {
-			get {
-				return options.SpaceBeforeDelegateDeclarationParentheses;
-			}
-			set {
-				options.SpaceBeforeDelegateDeclarationParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool BetweenEmptyDelegateDeclarationParentheses {
-			get {
-				return options.SpaceBetweenEmptyDelegateDeclarationParentheses;
-			}
-			set {
-				options.SpaceBetweenEmptyDelegateDeclarationParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool BeforeDelegateDeclarationParameterComma {
-			get {
-				return options.SpaceBeforeDelegateDeclarationParameterComma;
-			}
-			set {
-				options.SpaceBeforeDelegateDeclarationParameterComma = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool AfterDelegateDeclarationParameterComma {
-			get {
-				return options.SpaceAfterDelegateDeclarationParameterComma;
-			}
-			set {
-				options.SpaceAfterDelegateDeclarationParameterComma = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool WithinDelegateDeclarationParentheses {
-			get {
-				return options.SpaceWithinDelegateDeclarationParentheses;
-			}
-			set {
-				options.SpaceWithinDelegateDeclarationParentheses = value;
-			}
-		}
-		
 		
 		[ItemProperty]
 		public bool NewParentheses {
@@ -801,16 +739,6 @@ namespace TypeScriptBinding.Formatting
 		}
 		
 		[ItemProperty]
-		public bool ForeachParentheses {
-			get {
-				return options.SpaceBeforeForeachParentheses;
-			}
-			set {
-				options.SpaceBeforeForeachParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
 		public bool CatchParentheses {
 			get {
 				return options.SpaceBeforeCatchParentheses;
@@ -827,26 +755,6 @@ namespace TypeScriptBinding.Formatting
 			}
 			set {
 				options.SpaceBeforeSwitchParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool LockParentheses {
-			get {
-				return options.SpaceBeforeLockParentheses;
-			}
-			set {
-				options.SpaceBeforeLockParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool UsingParentheses {
-			get {
-				return options.SpaceBeforeUsingParentheses;
-			}
-			set {
-				options.SpaceBeforeUsingParentheses = value;
 			}
 		}
 		
@@ -931,16 +839,6 @@ namespace TypeScriptBinding.Formatting
 		}
 		
 		[ItemProperty]
-		public bool AroundNullCoalescingOperator {
-			get {
-				return options.SpaceAroundNullCoalescingOperator;
-			}
-			set {
-				options.SpaceAroundNullCoalescingOperator = value;
-			}
-		}
-		
-		[ItemProperty]
 		public bool WithinParentheses {
 			get {
 				return options.SpacesWithinParentheses;
@@ -982,16 +880,6 @@ namespace TypeScriptBinding.Formatting
 		}
 		
 		[ItemProperty]
-		public bool WithinForEachParentheses {
-			get {
-				return options.SpacesWithinForeachParentheses;
-			}
-			set {
-				options.SpacesWithinForeachParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
 		public bool WithinCatchParentheses {
 			get {
 				return options.SpacesWithinCatchParentheses;
@@ -1012,52 +900,12 @@ namespace TypeScriptBinding.Formatting
 		}
 		
 		[ItemProperty]
-		public bool WithinLockParentheses {
-			get {
-				return options.SpacesWithinLockParentheses;
-			}
-			set {
-				options.SpacesWithinLockParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool WithinUsingParentheses {
-			get {
-				return options.SpacesWithinUsingParentheses;
-			}
-			set {
-				options.SpacesWithinUsingParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
 		public bool WithinCastParentheses {
 			get {
 				return options.SpacesWithinCastParentheses;
 			}
 			set {
 				options.SpacesWithinCastParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool WithinSizeOfParentheses {
-			get {
-				return options.SpacesWithinSizeOfParentheses;
-			}
-			set {
-				options.SpacesWithinSizeOfParentheses = value;
-			}
-		}
-		
-		[ItemProperty]
-		public bool BeforeSizeOfParentheses {
-			get {
-				return options.SpaceBeforeSizeOfParentheses;
-			}
-			set {
-				options.SpaceBeforeSizeOfParentheses = value;
 			}
 		}
 		
@@ -1252,25 +1100,6 @@ namespace TypeScriptBinding.Formatting
 		#endregion
 		
 		#region Blank Lines
-		[ItemProperty]
-		public int BlankLinesBeforeUsings {
-			get {
-				return options.BlankLinesBeforeUsings;
-			}
-			set {
-				options.BlankLinesBeforeUsings = value;
-			}
-		}
-		
-		[ItemProperty]
-		public int BlankLinesAfterUsings {
-			get {
-				return options.BlankLinesAfterUsings;
-			}
-			set {
-				options.BlankLinesAfterUsings = value;
-			}
-		}
 		
 		[ItemProperty]
 		public int BlankLinesBeforeFirstDeclaration {
@@ -1299,16 +1128,6 @@ namespace TypeScriptBinding.Formatting
 			}
 			set {
 				options.BlankLinesBetweenFields = value;
-			}
-		}
-		
-		[ItemProperty]
-		public int BlankLinesBetweenEventFields {
-			get {
-				return options.BlankLinesBetweenEventFields;
-			}
-			set {
-				options.BlankLinesBetweenEventFields = value;
 			}
 		}
 		

@@ -20,3 +20,6 @@ IMMEDIATE:
 * Add tooltip.
 * Replace icons with some correct ones.
 * Looks like enum declarations are gonna change a little while. Check later and update.
+* Property formatting is *not* the same between C# and TS.
+* Add 'with' support in the formatting area (indent, formattion options, etc)
+* Maybe we should remove the Indexer properties in TypeScriptFormattingOptions?

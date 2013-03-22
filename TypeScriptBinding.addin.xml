@@ -67,4 +67,9 @@
 		<Ambience mimeType="text/x-typescript" class = "TypeScriptBinding.Formatting.TypeScriptAmbience" />
 	</Extension>
 
+	<Extension path = "/MonoDevelop/ProjectModel/PolicySets/Default" >
+		<Policies resource="DefaultTypeScriptPolicy.xml" />
+		<!--<Policies resource="MonoNameConventionPolicy.xml" />-->
+	</Extension>
+
 </Addin>

@@ -78,6 +78,7 @@
     <Folder Include="Formatting\" />
     <Folder Include="Project\" />
     <Folder Include="templates\" />
+    <Folder Include="Formatting\policies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.txt" />
@@ -86,6 +87,9 @@
     <EmbeddedResource Include="TypeScriptBinding.addin.xml" />
     <EmbeddedResource Include="templates\EmptyFile.xft.xml">
       <LogicalName>EmptyFile.xft.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formatting\policies\DefaultTypeScriptPolicy.xml">
+      <LogicalName>DefaultTypeScriptPolicy.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

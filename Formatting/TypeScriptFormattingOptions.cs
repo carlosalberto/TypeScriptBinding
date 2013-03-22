@@ -1,8 +1,9 @@
 // 
-// CSharpFormattingOptions.cs
+// TypeScriptFormattingOptions.cs
 //  
 // Author:
 //       Mike Krüger <mkrueger@novell.com>
+//       Carlos Alberto Cortez <calberto.cortez@gmail.com>
 //  
 // Copyright (c) 2009 Novell, Inc (http://www.novell.com)
 // 
@@ -86,7 +87,7 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		#region Indentation
-		public bool IndentNamespaceBody { // tested
+		public bool IndentModuleBody { // tested
 			get;
 			set;
 		}
@@ -97,11 +98,6 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		public bool IndentInterfaceBody { // tested
-			get;
-			set;
-		}
-
-		public bool IndentStructBody { // tested
 			get;
 			set;
 		}
@@ -117,11 +113,6 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		public bool IndentPropertyBody { // tested
-			get;
-			set;
-		}
-
-		public bool IndentEventBody { // tested
 			get;
 			set;
 		}
@@ -146,11 +137,6 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool AlignEmbeddedUsingStatements { // tested
-			get;
-			set;
-		}
-
 		public bool AlignEmbeddedIfStatements { // tested
 			get;
 			set;
@@ -164,7 +150,7 @@ namespace TypeScriptBinding.Formatting
 		#endregion
 		
 		#region Braces
-		public BraceStyle NamespaceBraceStyle { // tested
+		public BraceStyle ModuleBraceStyle { // tested
 			get;
 			set;
 		}
@@ -175,11 +161,6 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		public BraceStyle InterfaceBraceStyle { // tested
-			get;
-			set;
-		}
-
-		public BraceStyle StructBraceStyle { // tested
 			get;
 			set;
 		}
@@ -200,11 +181,6 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		public BraceStyle ConstructorBraceStyle {  // tested
-			get;
-			set;
-		}
-
-		public BraceStyle DestructorBraceStyle { // tested
 			get;
 			set;
 		}
@@ -234,31 +210,6 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public BraceStyle EventBraceStyle { // tested
-			get;
-			set;
-		}
-
-		public BraceStyle EventAddBraceStyle { // tested
-			get;
-			set;
-		}
-
-		public BraceStyle EventRemoveBraceStyle { // tested
-			get;
-			set;
-		}
-
-		public bool AllowEventAddBlockInline { // tested
-			get;
-			set;
-		}
-
-		public bool AllowEventRemoveBlockInline { // tested
-			get;
-			set;
-		}
-
 		public BraceStyle StatementBraceStyle { // tested
 			get;
 			set;
@@ -282,22 +233,7 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public BraceForcement ForEachBraceForcement { // tested
-			get;
-			set;
-		}
-
 		public BraceForcement WhileBraceForcement { // tested
-			get;
-			set;
-		}
-
-		public BraceForcement UsingBraceForcement { // tested
-			get;
-			set;
-		}
-
-		public BraceForcement FixedBraceForcement { // tested
 			get;
 			set;
 		}
@@ -455,33 +391,6 @@ namespace TypeScriptBinding.Formatting
 			get;
 			set;
 		}
-		
-		// delegates
-		
-		public bool SpaceBeforeDelegateDeclarationParentheses {
-			get;
-			set;
-		}
-
-		public bool SpaceBetweenEmptyDelegateDeclarationParentheses {
-			get;
-			set;
-		}
-
-		public bool SpaceBeforeDelegateDeclarationParameterComma {
-			get;
-			set;
-		}
-
-		public bool SpaceAfterDelegateDeclarationParameterComma {
-			get;
-			set;
-		}
-
-		public bool SpaceWithinDelegateDeclarationParentheses {
-			get;
-			set;
-		}
 
 		public bool SpaceBeforeNewParentheses { // tested
 			get;
@@ -503,27 +412,12 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool SpaceBeforeForeachParentheses { // tested
-			get;
-			set;
-		}
-
 		public bool SpaceBeforeCatchParentheses { // tested
 			get;
 			set;
 		}
 
 		public bool SpaceBeforeSwitchParentheses { // tested
-			get;
-			set;
-		}
-
-		public bool SpaceBeforeLockParentheses { // tested
-			get;
-			set;
-		}
-
-		public bool SpaceBeforeUsingParentheses { // tested
 			get;
 			set;
 		}
@@ -568,11 +462,6 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool SpaceAroundNullCoalescingOperator {
-			get;
-			set;
-		}
-
 		public bool SpacesWithinParentheses { // tested
 			get;
 			set;
@@ -593,22 +482,12 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool SpacesWithinForeachParentheses { // tested
-			get;
-			set;
-		}
-
 		public bool SpacesWithinCatchParentheses { // tested
 			get;
 			set;
 		}
 
 		public bool SpacesWithinSwitchParentheses { // tested
-			get;
-			set;
-		}
-
-		public bool SpacesWithinLockParentheses { // tested
 			get;
 			set;
 		}
@@ -736,12 +615,12 @@ namespace TypeScriptBinding.Formatting
 		#endregion
 		
 		#region Blank Lines
-		public int BlankLinesBeforeUsings {
+		public int BlankLinesBeforeImports {
 			get;
 			set;
 		}
 
-		public int BlankLinesAfterUsings {
+		public int BlankLinesAfterImports {
 			get;
 			set;
 		}
@@ -757,11 +636,6 @@ namespace TypeScriptBinding.Formatting
 		}
 
 		public int BlankLinesBetweenFields {
-			get;
-			set;
-		}
-
-		public int BlankLinesBetweenEventFields {
 			get;
 			set;
 		}
