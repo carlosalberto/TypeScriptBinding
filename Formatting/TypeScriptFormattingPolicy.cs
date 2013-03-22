@@ -970,16 +970,6 @@ namespace TypeScriptBinding.Formatting
 		}
 		
 		[ItemProperty]
-		public bool WithinCheckedExpressionParantheses {
-			get {
-				return options.SpacesWithinCheckedExpressionParantheses;
-			}
-			set {
-				options.SpacesWithinCheckedExpressionParantheses = value;
-			}
-		}
-		
-		[ItemProperty]
 		public bool ConditionalOperatorBeforeConditionSpace {
 			get {
 				return options.SpaceBeforeConditionalOperatorCondition;

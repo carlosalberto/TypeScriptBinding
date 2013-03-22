@@ -542,11 +542,6 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool SpacesWithinCheckedExpressionParantheses { // tested
-			get;
-			set;
-		}
-
 		public bool SpaceBeforeConditionalOperatorCondition { // tested
 			get;
 			set;

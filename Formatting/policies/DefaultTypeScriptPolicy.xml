@@ -114,7 +114,6 @@ THE SOFTWARE.
 	<BeforeNewParameterComma>False</BeforeNewParameterComma>
 	<AfterNewParameterComma>True</AfterNewParameterComma>
 	<BeforeTypeOfParentheses>False</BeforeTypeOfParentheses>
-	<WithinCheckedExpressionParantheses>False</WithinCheckedExpressionParantheses>
 	<ConditionalOperatorBeforeConditionSpace>True</ConditionalOperatorBeforeConditionSpace>
 	<ConditionalOperatorAfterConditionSpace>True</ConditionalOperatorAfterConditionSpace>
 	<ConditionalOperatorBeforeSeparatorSpace>True</ConditionalOperatorBeforeSeparatorSpace>
@@ -130,6 +129,5 @@ THE SOFTWARE.
 	<BlankLinesBeforeFirstDeclaration>0</BlankLinesBeforeFirstDeclaration>
 	<BlankLinesBetweenTypes>1</BlankLinesBetweenTypes>
 	<BlankLinesBetweenFields>0</BlankLinesBetweenFields>
-	<BlankLinesBetweenEventFields>0</BlankLinesBetweenEventFields>
 	<BlankLinesBetweenMembers>1</BlankLinesBetweenMembers>
 </TypeScriptFormattingPolicy>
