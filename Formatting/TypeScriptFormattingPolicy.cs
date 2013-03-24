@@ -37,7 +37,7 @@ using MonoDevelop.Projects.Policies;
 
 namespace TypeScriptBinding.Formatting
 {
-	//[PolicyType ("TypeScript formatting")]
+	[PolicyType ("TypeScript formatting")]
 	public class TypeScriptFormattingPolicy : IEquatable<TypeScriptFormattingPolicy>
 	{
 		TypeScriptFormattingOptions options = TypeScriptFormattingOptionsFactory.CreateDefault ();

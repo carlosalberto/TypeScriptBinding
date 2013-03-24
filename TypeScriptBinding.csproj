@@ -61,6 +61,9 @@
       <Package>monodevelop</Package>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib" />
+    <Reference Include="Mono.Addins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
