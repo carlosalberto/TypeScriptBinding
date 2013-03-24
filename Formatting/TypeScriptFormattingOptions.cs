@@ -603,10 +603,6 @@ namespace TypeScriptBinding.Formatting
 			set;
 		}
 
-		public bool SpaceInNamedArgumentAfterDoubleColon {
-			get;
-			set;
-		}
 		#endregion
 		
 		#region Blank Lines

@@ -40,9 +40,7 @@ namespace TypeScriptBinding.Formatting
 	//[PolicyType ("TypeScript formatting")]
 	public class TypeScriptFormattingPolicy : IEquatable<TypeScriptFormattingPolicy>
 	{
-		// FIXME
-		//TypeScriptFormattingOptions options = FormattingOptionsFactory.CreateMono ();
-		TypeScriptFormattingOptions options = new TypeScriptFormattingOptions ();
+		TypeScriptFormattingOptions options = TypeScriptFormattingOptionsFactory.CreateDefault ();
 
 		public string Name {
 			get;
