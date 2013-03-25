@@ -63,6 +63,10 @@
 		</MimeType>
 	</Extension>
 	
+	<Extension path = "/MonoDevelop/Ide/CodeFormatters">
+		<Formatter mimeType="text/x-typescript" class="TypeScriptBinding.Formatting.TypeScriptFormatter" />
+	</Extension>
+	
 	<Extension path = "/MonoDevelop/TypeSystem/Ambiences">
 		<Ambience mimeType="text/x-typescript" class = "TypeScriptBinding.Formatting.TypeScriptAmbience" />
 	</Extension>
