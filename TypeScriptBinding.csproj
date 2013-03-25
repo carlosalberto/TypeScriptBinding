@@ -84,6 +84,7 @@
     <Folder Include="Project\" />
     <Folder Include="templates\" />
     <Folder Include="Formatting\policies\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TODO.txt" />
@@ -95,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formatting\policies\DefaultTypeScriptPolicy.xml">
       <LogicalName>DefaultTypeScriptPolicy.xml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\TypeScriptSyntaxMode.xml">
+      <LogicalName>TypeScriptSyntaxMode.xml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

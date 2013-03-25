@@ -70,6 +70,10 @@
 	<Extension path = "/MonoDevelop/TypeSystem/Ambiences">
 		<Ambience mimeType="text/x-typescript" class = "TypeScriptBinding.Formatting.TypeScriptAmbience" />
 	</Extension>
+	
+	<Extension path="/MonoDevelop/SourceEditor2/SyntaxModes">
+		<Templates resource="TypeScriptSyntaxMode.xml" />
+	</Extension>
 
 	<Extension path = "/MonoDevelop/ProjectModel/PolicySets/Default" >
 		<Policies resource="DefaultTypeScriptPolicy.xml" />
