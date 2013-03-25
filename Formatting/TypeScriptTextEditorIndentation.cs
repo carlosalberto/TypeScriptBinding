@@ -111,22 +111,16 @@ namespace TypeScriptBinding.Formatting
 
 		public TypeScriptTextEditorIndentation ()
 		{
-			// FIXME
-			// LOOK FOR CSharpFormatter and add ourselves as typescript, etc.
-			/*
-			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (CSharpFormatter.MimeType);
+			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (TypeScriptFormatter.MimeType);
 			policy = MonoDevelop.Projects.Policies.PolicyService.GetDefaultPolicy<TypeScriptFormattingPolicy> (types);
 			textStylePolicy = MonoDevelop.Projects.Policies.PolicyService.GetDefaultPolicy<TextStylePolicy> (types);
-			*/
 		}
 
 		public override void Initialize ()
 		{
 			base.Initialize ();
 
-			// FIXME - same as above.
-			/*
-			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (CSharpFormatter.MimeType);
+			IEnumerable<string> types = MonoDevelop.Ide.DesktopService.GetMimeTypeInheritanceChain (TypeScriptFormatter.MimeType);
 			if (Document.Project != null && Document.Project.Policies != null) {
 				policy = base.Document.Project.Policies.Get<TypeScriptFormattingPolicy> (types);
 				textStylePolicy = base.Document.Project.Policies.Get<TextStylePolicy> (types);
@@ -140,18 +134,20 @@ namespace TypeScriptBinding.Formatting
 						textStylePolicy = project.Policies.Get<TextStylePolicy> (types);
 					}
 
+					/*
 					Editor.IndentationTracker = new IndentVirtualSpaceManager (
 						Editor,
 						new DocumentStateTracker<TypeScriptIndentEngine> (new TypeScriptIndentEngine (policy, textStylePolicy), Editor)
 					);
+					*/
 				};
 
+				/*
 				Editor.IndentationTracker = new IndentVirtualSpaceManager (
 					Editor,
 					new DocumentStateTracker<TypeScriptIndentEngine> (new TypeScriptIndentEngine (policy, textStylePolicy), Editor)
-				);
+				);*/
 			}
-			*/
 
 			InitTracker ();
 			Document.Editor.Paste += HandleTextPaste;
@@ -170,14 +166,10 @@ namespace TypeScriptBinding.Formatting
 
 		public bool DoInsertTemplate ()
 		{
-			// FIXME - MimeType, etc
-			/*
 			string word = CodeTemplate.GetWordBeforeCaret (Editor);
-			foreach (CodeTemplate template in CodeTemplateService.GetCodeTemplates (CSharpFormatter.MimeType)) {
+			foreach (CodeTemplate template in CodeTemplateService.GetCodeTemplates (TypeScriptFormatter.MimeType))
 				if (template.Shortcut == word) 
 					return true;
-			}
-			*/
 
 			return false;
 		}

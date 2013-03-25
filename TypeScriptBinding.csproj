@@ -76,6 +76,7 @@
     <Compile Include="Project\TypeScriptProjectBinding.cs" />
     <Compile Include="Formatting\TypeScriptAmbience.cs" />
     <Compile Include="Formatting\TypeScriptFormattingOptionsFactory.cs" />
+    <Compile Include="Formatting\TypeScriptFormatter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

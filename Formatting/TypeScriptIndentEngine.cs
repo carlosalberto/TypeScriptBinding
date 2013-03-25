@@ -82,13 +82,11 @@ namespace TypeScriptBinding.Formatting
 
 		public TypeScriptIndentEngine (TypeScriptFormattingPolicy policy, TextStylePolicy textPolicy)
 		{
-			/*
 			if (policy == null)
 				throw new ArgumentNullException ("policy");
 
 			if (textPolicy == null)
 				throw new ArgumentNullException ("textPolicy");
-			*/
 
 			this.policy = policy;
 			this.textPolicy = textPolicy;
@@ -154,10 +152,7 @@ namespace TypeScriptBinding.Formatting
 			var builder = new StringBuilder ();
 			for (int i = 0; i < indent.Length; i++) {
 				if (indent[i] == '\t')
-					/* TODO: TextPolicy support.
 					builder.Append (' ', textPolicy.IndentWidth);
-					*/
-					builder.Append (' ', 4);
 				else
 					builder.Append (indent[i]);
 			}
@@ -167,9 +162,8 @@ namespace TypeScriptBinding.Formatting
 
 		public string ThisLineIndent {
 			get {
-				/* TODO: TextPolicy support.
 				if (textPolicy.TabsToSpaces)
-					return TabsToSpaces (curIndent);*/
+					return TabsToSpaces (currIndent);
 				
 				return currIndent;
 			}
@@ -177,9 +171,8 @@ namespace TypeScriptBinding.Formatting
 		
 		public string NewLineIndent {
 			get {
-				/* TODO: TextPolicy support.
 				if (textPolicy.TabsToSpaces)
-					return TabsToSpaces (stack.PeekIndent (0));*/
+					return TabsToSpaces (stack.PeekIndent (0));
 				
 				return stack.PeekIndent (0);
 			}
@@ -509,8 +502,7 @@ namespace TypeScriptBinding.Formatting
 					}
 				}
 				
-				//if (!policy.IndentSwitchBody) {
-				if (true) {
+				if (!policy.IndentSwitchBody) {
 					needsReindent = true;
 					TrimIndent ();
 				}

@@ -64,7 +64,7 @@ namespace TypeScriptBinding.Formatting
 		
 		static TypeScriptFormattingPolicy ()
 		{
-			PolicyService.InvariantPolicies.Set<TypeScriptFormattingPolicy> (new TypeScriptFormattingPolicy (), "text/x-typescript");
+			PolicyService.InvariantPolicies.Set<TypeScriptFormattingPolicy> (new TypeScriptFormattingPolicy (), TypeScriptFormatter.MimeType);
 		}
 		
 		protected TypeScriptFormattingPolicy (TypeScriptFormattingOptions options)
@@ -1132,9 +1132,7 @@ namespace TypeScriptBinding.Formatting
 		
 		public TypeScriptFormattingPolicy ()
 		{
-			// FIXME
-			//this.options = FormattingOptionsFactory.CreateMono ();
-			this.options = new TypeScriptFormattingOptions ();
+			this.options = TypeScriptFormattingOptionsFactory.CreateDefault ();
 		}
 		
 		public static TypeScriptFormattingPolicy Load (FilePath selectedFile)
