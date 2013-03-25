@@ -1,9 +1,10 @@
 IMMEDIATE:
 
-* Apply TextStylePolicy/TypeScriptFormattinPolicy
-	* When we do this, we can re-enable tab-to-spaces support.
-* Add MIME types for TS.
-* Add support for on-fly-formatting (and formatting in general). -> Add the formatter in the addin def.
+* Provide a text style ourselves.
+* Add support for on-fly-formatting (and formatting in general).
+	* We have the Formatter, but need to incorporate a Parser to make the actual foo.
+* Virtual Indent support, maybe? (As in C#)
+* Bring syntax highlighting from Eno's effort?
 
 * Add a TypeScriptLanguageBinding
 * Simple empty file and project (xft and xpt).

@@ -42,7 +42,7 @@ namespace TypeScriptBinding.Formatting
 	{
 		static internal readonly string MimeType = "text/x-typescript";
 
-		public override bool SupportsOnTheFlyFormatting { get { return true; } }
+		public override bool SupportsOnTheFlyFormatting { get { return false; } }
 
 		public override bool SupportsCorrectingIndent { get { return true; } }
 
