@@ -4,7 +4,6 @@ IMMEDIATE:
 * Add support for on-fly-formatting (and formatting in general).
 	* We have the Formatter, but need to incorporate a Parser to make the actual foo.
 * Virtual Indent support, maybe? (As in C#)
-* Bring syntax highlighting from Eno's effort?
 
 * Add a TypeScriptLanguageBinding
 * Simple empty file and project (xft and xpt).
@@ -13,7 +12,6 @@ IMMEDIATE:
 
 * What if isSomethingSelected is something that can change across the state of the KeyPress() method?
 * EditorIndentation.GuessSemicolon..() takes into account get/set. I'm not very sure we have them around for TS.
-* Add ambience.
 * Add a parser (this can be based on the TypeScript runtime itself).
 * Add syntax mode.
 * Add refactoring.
@@ -25,3 +23,4 @@ IMMEDIATE:
 * Add 'with' support in the formatting area (indent, formattion options, etc)
 * Maybe we should remove the Indexer properties in TypeScriptFormattingOptions?
 * Array/list formatting (new line, brackets, etc)
+* Should declare/constructor get special syntax highlighting?
